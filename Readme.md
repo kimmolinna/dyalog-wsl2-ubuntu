@@ -1,22 +1,8 @@
 # DyalogAPL on WSL2 with Ubuntu 22.04 LTS
-DyalogAPL needs Dotnet Core 3.1 at the moment and Dotnet core 3.1 needs Openssl 1.1
-### Openssl 1.1
-You can install Openssl 1.1 with the following commands:
-```sh
-echo "deb http://security.ubuntu.com/ubuntu impish-security main" | sudo tee /etc/apt/sources.list.d/impish-security.list
-sudo apt-get update
-sudo apt-get install libssl1.1
-```
-### Dotnet 3.1
-You can install Dotnet 3.1 with the following commands:
-```sh	
-sudo wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-sudo add-apt-repository universe
-sudo apt-get update
-sudo apt-get install apt-transport-https
-sudo apt-get update
-sudo apt-get install dotnet-sdk-3.1
+### Dotnet 6
+You can install Dotnet 6.0 with the following command:
+```bash	
+sudo apt-get install dotnet6
 ```
 
 ## DyalogAPL
@@ -25,6 +11,33 @@ For Dyalog APL you just need to install the following packages:
 sudo apt install libtinfo5
 sudo dpkg --install  linux_64_18.2.45405_unicode.x86_64.deb
 ```
+## Using .Net 6 with DyalogAPL 18.2
+You can use .Net 6.0 with Dyalog according to John Daintre's instructions:
+ 
+```
+We will be supporting .NET 6.0 "out of the box" with the next version of Dyalog, 19.0 (I cannot say yet when that will be available).
+
+Until then it should be possible to move to .NET 6.0 by making minor changes to some of Dyalog's configuration files. We cannot formally support this route, but I don't think there will be any problems.
+
+In the dyalog installation you will see files called:
+
+Dyalog.Net.Bridge.deps.json
+Dyalog.Net.Bridge.runtimeconfig.json
+
+Each of these files contains version strings which will include the fragment "3.1". Change those "3.1"s to "6.0"s and you should be good to go.
+
+The following are the changes I made:
+
+Dyalog.Net.Bridge.deps.json: "name": ".NETCoreApp,Version=v6.0",
+Dyalog.Net.Bridge.deps.json: ".NETCoreApp,Version=v6.0": {
+Dyalog.Net.Bridge.runtimeconfig.json: "tfm": "netcoreapp6.0",
+Dyalog.Net.Bridge.runtimeconfig.json: "version": "6.0.0"
+
+
+Best Regards
+John Daintree
+```
+
 ## Ride for Windows
 You can download the latest version of Ride for Windows from [here](https://github.com/Dyalog/ride/releases).
 ## Starting RIDE on Windows by using DyalogAPL from WSL2 
